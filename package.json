@@ -1,0 +1,21 @@
+{
+  "name": "js2css",
+  "version": "1.0.0",
+  "bin": {
+    "js2css": "bin/js2css"
+  },
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Camilo Paez <camilopaez.dev@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "minimist": "^1.2.5",
+    "mkdirp": "^1.0.4",
+    "prettier": "^2.3.0"
+  }
+}
