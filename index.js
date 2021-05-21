@@ -25,18 +25,22 @@ async function main () {
       if (typeof value === 'object') {
         return recursive('--' + prefix + key, value)
       } else {
-          if (!prefix) return text += `--${key}: ${value};`
-          return text += `${prefix}-${key}: ${value};`
+        if (!prefix) {
+          text += `--${key}: ${value};`
+          return text
+        }
+        text += `${prefix}-${key}: ${value};`
+        return text
       }
-    })  
+    })
   }
 
   recursive('', file)
   const textBase = wrapElement(text)
   const result = prettier.format(textBase, { parser: 'css' })
 
-  const outfileName = filePath.replace(path.extname(filePath), '.css')
-  const outFilePath = path.join(process.cwd(), args.outfile || outfileName)
+  const outFileName = filePath.replace(path.extname(filePath), '.css')
+  const outFilePath = path.join(process.cwd(), args.outfile || outFileName)
 
   try {
     await mkdirp(path.dirname(outFilePath))
