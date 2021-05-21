@@ -1,9 +1,4 @@
-const minimist = require('minimist')
 const prettier = require('prettier')
-const fs = require('fs').promises
-const mkdirp = require('mkdirp')
-const path = require('path')
-const chalk = require('chalk')
 
 const wrapElement = (data) => `
 :root {
@@ -11,44 +6,43 @@ const wrapElement = (data) => `
 }  
 `
 
-async function main () {
-  const args = minimist(process.argv.slice(2))
-
-  const filePath = args._[0].replace('./', '')
-  if (!filePath) throw Error('Filepath is required')
-  const file = require(path.join(process.cwd(), filePath))
-
+function tokens2css (file) {
+  if (typeof file === 'string') file = JSON.parse(file)
   let text = ''
 
   const recursive = (prefix, object) => {
     Object.entries(object).map(([key, value]) => {
-      if (typeof value === 'object') {
-        return recursive('--' + prefix + key, value)
-      } else {
+      if (Array.isArray(value)) {
         if (!prefix) {
-          text += `--${key}: ${value};`
+          text += `--${key}: ${value.join(', ')};`
           return text
         }
-        text += `${prefix}-${key}: ${value};`
+
+        text += `${prefix}-${key}: ${value.join(', ')};`
         return text
       }
+
+      if (typeof value === 'object') {
+        if (!prefix) {
+          return recursive(`--${key}`, value)
+        }
+
+        return recursive(`${prefix}-${key}`, value)
+      }
+
+      if (!prefix) {
+        text += `--${key}: ${value};`
+        return text
+      }
+
+      text += `${prefix}-${key}: ${value};`
+      return text
     })
   }
 
   recursive('', file)
   const textBase = wrapElement(text)
-  const result = prettier.format(textBase, { parser: 'css' })
-
-  const outFileName = filePath.replace(path.extname(filePath), '.css')
-  const outFilePath = path.join(process.cwd(), args.outfile || outFileName)
-
-  try {
-    await mkdirp(path.dirname(outFilePath))
-    await fs.writeFile(outFilePath, result, 'utf-8')
-    return console.log(chalk.cyanBright('Build successfully 🎉'))
-  } catch (error) {
-    console.error(error)
-  }
+  return prettier.format(textBase, { parser: 'css' })
 }
 
-module.exports = main
+module.exports = tokens2css

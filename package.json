@@ -7,7 +7,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --silent",
+    "lint": "standard --fix"
   },
   "keywords": [],
   "author": "Camilo Paez <camilopaez.dev@gmail.com>",
@@ -19,9 +20,16 @@
     "prettier": "^2.3.0"
   },
   "devDependencies": {
+    "jest": "^26.6.3",
     "standard": "^16.0.3"
   },
   "eslintConfig": {
-    "extends": "./node_modules/standard/eslintrc.json"
+    "extends": "./node_modules/standard/eslintrc.json",
+    "env": {
+      "jest": true
+    }
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
