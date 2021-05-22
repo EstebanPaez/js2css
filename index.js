@@ -1,13 +1,23 @@
 const prettier = require('prettier')
 
-const wrapElement = (data) => `
-:root {
+/**
+ * Wrap your custom properties into a selector
+ * @param  {string} data - your Custom properties
+ * @param  {string} selector - a CSS selector
+ */
+const wrapElement = (data, selector = ':root') => `
+${selector} {
   ${data}
 }  
 `
 
-function tokens2css (file) {
-  if (typeof file === 'string') file = JSON.parse(file)
+/**
+ * Transform your design tokens into CSS custom properties
+ * @param  {object | string} tokens - your tokens
+ * @param  {string} wrapperSelector - a CSS selector
+ */
+function tokens2css (tokens, wrapperSelector = ':root') {
+  if (typeof tokens === 'string') tokens = JSON.parse(tokens)
   let text = ''
 
   const recursive = (prefix, object) => {
@@ -40,8 +50,8 @@ function tokens2css (file) {
     })
   }
 
-  recursive('', file)
-  const textBase = wrapElement(text)
+  recursive('', tokens)
+  const textBase = wrapElement(text, wrapperSelector)
   return prettier.format(textBase, { parser: 'css' })
 }
 

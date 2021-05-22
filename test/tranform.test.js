@@ -7,6 +7,11 @@ test('Should transform an Js Object as expected', () => {
   expect(result).toMatch(expected)
 })
 
+test('Should wrap as expected', () => {
+  const result = tokens2css(choices, '#app')
+  expect(result).toContain('#app')
+})
+
 test('Should transform a string as expected', () => {
   const result = tokens2css(choicesString)
   expect(result).toMatch(expected)

@@ -9,10 +9,12 @@ const cli = async () => {
   const args = minimist(process.argv.slice(2))
 
   const filePath = args._[0].replace('./', '')
-  if (!filePath) throw Error('Filepath is required')
-  const file = require(path.join(process.cwd(), filePath))
+  const wrapper = args.wrapper
 
-  const result = await tokens2css(file)
+  if (!filePath) throw Error('Filepath is required')
+
+  const file = require(path.join(process.cwd(), filePath))
+  const result = tokens2css(file, wrapper)
 
   const outFileName = filePath.replace(path.extname(filePath), '.css')
   const outFilePath = path.join(process.cwd(), args.outfile || outFileName)
