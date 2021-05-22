@@ -10,7 +10,15 @@
     "test": "jest --silent",
     "lint": "standard --fix"
   },
-  "keywords": [],
+  "keywords": [
+    "design-tokens",
+    "custom-properties",
+    "design-systems",
+    "css"
+  ],
+  "repository": {
+    "url": "https://github.com/EstebanPaez/tokens2css"
+  },
   "author": "Camilo Paez <camilopaez.dev@gmail.com>",
   "license": "MIT",
   "dependencies": {
