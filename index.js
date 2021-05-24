@@ -1,13 +1,11 @@
-const prettier = require('prettier')
-
 /**
  * Wrap your custom properties into a selector
  * @param  {string} data - your Custom properties
  * @param  {string} selector - a CSS selector
  */
-const wrapElement = (data, selector = ':root') => `
-${selector} {
-  ${data}
+const wrapElement = (data, selector = ':root') =>
+`${selector} {
+${data}
 }  
 `
 
@@ -18,41 +16,31 @@ ${selector} {
  */
 function tokens2css (tokens, wrapperSelector = ':root') {
   if (typeof tokens === 'string') tokens = JSON.parse(tokens)
-  let text = ''
 
-  const recursive = (prefix, object) => {
-    Object.entries(object).map(([key, value]) => {
+  const recursive = (prefix, tokens) => {
+    return Object.entries(tokens).reduce((accumulate, [key, value]) => {
       if (Array.isArray(value)) {
-        if (!prefix) {
-          text += `--${key}: ${value.join(', ')};`
-          return text
-        }
-
-        text += `${prefix}-${key}: ${value.join(', ')};`
-        return text
+        if (!prefix) return accumulate + `  --{key}: ${value.join(', ')};\n`
+        return accumulate + `  ${prefix}-${key}: ${value.join(', ')};\n`
       }
 
       if (typeof value === 'object') {
-        if (!prefix) {
-          return recursive(`--${key}`, value)
-        }
-
-        return recursive(`${prefix}-${key}`, value)
+        if (!prefix) return accumulate + recursive(`--${key}`, value)
+        return accumulate + recursive(`${prefix}-${key}`, value)
       }
 
-      if (!prefix) {
-        text += `--${key}: ${value};`
-        return text
-      }
+      if (!prefix) return accumulate + `  --${key}: ${value};\n`
 
-      text += `${prefix}-${key}: ${value};`
-      return text
-    })
+      return accumulate + `  ${prefix}-${key}: ${value};\n`
+    }, '')
   }
 
-  recursive('', tokens)
-  const textBase = wrapElement(text, wrapperSelector)
-  return prettier.format(textBase, { parser: 'css' })
+  // Recursive moment 👌
+  const text = recursive('', tokens)
+
+  console.log(text)
+  const textBase = wrapElement(text.slice(0, text.length - 2), wrapperSelector)
+  return textBase
 }
 
 module.exports = tokens2css
