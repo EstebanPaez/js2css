@@ -38,7 +38,6 @@ function tokens2css (tokens, wrapperSelector = ':root') {
   // Recursive moment 👌
   const text = recursive('', tokens)
 
-  console.log(text)
   const textBase = wrapElement(text.slice(0, text.length - 2), wrapperSelector)
   return textBase
 }
