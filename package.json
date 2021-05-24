@@ -1,6 +1,6 @@
 {
   "name": "tokens2css",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "bin": {
     "tokens2css": "bin/tokens2css"
   },
@@ -22,7 +22,6 @@
   "author": "Camilo Paez <camilopaez.dev@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "chalk": "^4.1.1",
     "minimist": "^1.2.5",
     "mkdirp": "^1.0.4",
     "prettier": "^2.3.0"

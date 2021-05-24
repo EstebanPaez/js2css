@@ -3,7 +3,6 @@ const minimist = require('minimist')
 const fs = require('fs').promises
 const mkdirp = require('mkdirp')
 const path = require('path')
-const chalk = require('chalk')
 
 const cli = async () => {
   const args = minimist(process.argv.slice(2))
@@ -22,7 +21,7 @@ const cli = async () => {
   try {
     await mkdirp(path.dirname(outFilePath))
     await fs.writeFile(outFilePath, result, 'utf-8')
-    return console.log(chalk.cyanBright('Build successfully 🎉'))
+    return console.log('\x1b[33m%s\x1b[0m', 'Build successfully 🎉')
   } catch (error) {
     console.error(error)
   }
