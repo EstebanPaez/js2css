@@ -4,7 +4,7 @@
   "bin": {
     "tokens2css": "bin/tokens2css"
   },
-  "description": "",
+  "description": "Transform your design tokens into CSS custom properties",
   "main": "index.js",
   "scripts": {
     "test": "jest --silent",
