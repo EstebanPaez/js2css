@@ -1,6 +1,6 @@
 {
   "name": "tokens2css",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "bin": {
     "tokens2css": "bin/tokens2css"
   },
